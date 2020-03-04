@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NewYorkTimes</string>
+    <string name="welcome">Welcome to NewYorkTimes. Search for any article you want to read</string>
+    <string name="loading">Loading</string>
+    <string name="search">Search</string>
+    <string name="share">Share</string>
+    <string name="published">Published</string>
+    <string name="send_email">Send Email..</string>
+    <string name="oops_message">Oops something went wrong when trying to fetch data. Please try again later</string>
+</resources>
