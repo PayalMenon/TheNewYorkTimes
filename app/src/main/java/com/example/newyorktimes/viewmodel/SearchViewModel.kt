@@ -1,7 +1,6 @@
 package com.example.newyorktimes.viewmodel
 
 import android.app.Application
-import android.view.animation.Transformation
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     application: Application,
-    val articleDataFactory: ArticleDataFactory
+    private val articleDataFactory: ArticleDataFactory
 ) : AndroidViewModel(application) {
 
     //LiveData
@@ -34,17 +33,9 @@ class SearchViewModel @Inject constructor(
     val hideText: LiveData<Event<Unit>>
         get() = _hideText
 
-    private val _showText = MutableLiveData<Event<Int>>()
-    val showText: LiveData<Event<Int>>
-        get() = _showText
-
     private val _showArticleList = MutableLiveData<Event<PagedList<Article>>>()
     val showArticleList: LiveData<Event<PagedList<Article>>>
         get() = _showArticleList
-
-    private val _showArticleDetailsFragment = MutableLiveData<Event<Article>>()
-    val showArticleDetailsFragment: LiveData<Event<Article>>
-        get() = _showArticleDetailsFragment
 
     private val _launchShareEmail = MutableLiveData<Event<String>>()
     val launchShareEmail: LiveData<Event<String>>
@@ -66,11 +57,8 @@ class SearchViewModel @Inject constructor(
 
     fun onListFetched(list : PagedList<Article>) {
         _hideLoading.value = Event(Unit)
+        _hideText.value = Event(Unit)
         _showArticleList.value = Event(list)
-    }
-
-    fun onArticleSelected(article: Article) {
-        _showArticleDetailsFragment.value = Event(article)
     }
 
     fun getArticleList() : PagedList<Article>? {

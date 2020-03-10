@@ -5,7 +5,7 @@ import androidx.paging.DataSource
 import com.example.newyorktimes.model.Article
 import javax.inject.Inject
 
-class ArticleDataFactory @Inject constructor(val articleDataSource: ArticleDataSource) :
+class ArticleDataFactory @Inject constructor(private val articleDataSource: ArticleDataSource) :
     DataSource.Factory<Int, Article>() {
 
     val articleDataSourceLiveData = MutableLiveData<ArticleDataSource>()

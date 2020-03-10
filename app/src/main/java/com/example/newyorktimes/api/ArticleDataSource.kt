@@ -11,16 +11,16 @@ import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
-class ArticleDataSource @Inject constructor(val apiService: ApiService) :
+class ArticleDataSource @Inject constructor(private val apiService: ApiService) :
     PageKeyedDataSource<Int, Article>() {
 
     companion object {
-        private const val NETWORK_ERROR = "No Netowrk to fetch request"
+        private const val NETWORK_ERROR = "No Network to fetch request"
         private const val REQUEST_FAILED = "API Failed to give response"
         private const val NEW_YORK_TIMES = "NewYorkTimes"
     }
     var errorMessage : MutableLiveData<Event<String>> = MutableLiveData()
-    var queryString: String? = null
+    private var queryString: String? = null
 
     fun setQuery(query: String) {
         queryString = query

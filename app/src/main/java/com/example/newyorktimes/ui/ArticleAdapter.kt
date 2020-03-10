@@ -13,7 +13,7 @@ import com.example.newyorktimes.ui.ArticleAdapter.Companion.IMAGE_BASE_URL
 import com.example.newyorktimes.ui.ArticleAdapter.Companion.IMAGE_TYPE
 import kotlinx.android.synthetic.main.article_item.view.*
 
-class ArticleAdapter(val clickListner: (Article) -> Unit) :
+class ArticleAdapter(private val clickListener: (Article) -> Unit) :
     PagedListAdapter<Article, ArticleViewHolder>(ArticleDiffUtil()) {
 
     companion object {
@@ -33,20 +33,20 @@ class ArticleAdapter(val clickListner: (Article) -> Unit) :
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         getItem(position)?.let { article ->
-            holder.setArticle(article, clickListner)
+            holder.setArticle(article, clickListener)
         }
     }
 }
 
-class ArticleViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+class ArticleViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
-    fun setArticle(article: Article, clickListner: (Article) -> Unit) {
+    fun setArticle(article: Article, clickListener: (Article) -> Unit) {
         view.article_title.text = article.headline.headlineMain
         val imageUrl: List<MultiMedia> = article.multimedia.filter { it.type == IMAGE_TYPE }
         if (imageUrl.isNotEmpty()) {
             Glide.with(view.context).load(IMAGE_BASE_URL.plus(imageUrl[0].imageUrl))
                 .into(view.article_image)
         }
-        view.article_parent.setOnClickListener { clickListner(article) }
+        view.article_parent.setOnClickListener { clickListener(article) }
     }
 }

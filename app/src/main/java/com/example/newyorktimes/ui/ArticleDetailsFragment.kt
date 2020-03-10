@@ -1,5 +1,6 @@
 package com.example.newyorktimes.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.newyorktimes.R
 import com.example.newyorktimes.model.Article
 import com.example.newyorktimes.model.MultiMedia
+import com.example.newyorktimes.utils.EventObserver
 import com.example.newyorktimes.viewmodel.SearchViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.detail_fragment.view.*
@@ -17,7 +19,7 @@ class ArticleDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var searchViewModel: SearchViewModel
+    private lateinit var searchViewModel: SearchViewModel
 
     companion object {
         private const val ARTICLE = "article"
@@ -39,7 +41,7 @@ class ArticleDetailsFragment : DaggerFragment() {
         arguments?.getParcelable<Article>(ARTICLE)?.let { article ->
             updateDetailsScreen(view, article)
         }
-
+        setListener()
         return view
     }
 
@@ -64,7 +66,7 @@ class ArticleDetailsFragment : DaggerFragment() {
         super.onPrepareOptionsMenu(menu)
     }
 
-    fun updateDetailsScreen(view: View, article: Article) {
+    private fun updateDetailsScreen(view: View, article: Article) {
         view.detail_title.text = article.headline.headlineMain
         view.detail_abstract.text = article.abstract
         view.detail_author.text = article.author.author
@@ -83,5 +85,13 @@ class ArticleDetailsFragment : DaggerFragment() {
         date?.let {
             view.detail_published_date.text = date
         }
+    }
+
+    private fun setListener() {
+
+        searchViewModel.launchShareEmail.observe(this, EventObserver { webUrl ->
+            val intent = Intent(Intent.ACTION_SEND).apply { putExtra(Intent.EXTRA_TEXT, webUrl) }
+            startActivity(Intent.createChooser(intent, resources.getString(R.string.send_email)))
+        })
     }
 }
